@@ -46,30 +46,30 @@ def get_DEET(years, features, basepath,metricName):
             except Exception as e:
                 print(f"访问时出错 {each_file}: {e}")
 
-    for year in exist_years:
-        for exist_file in exist_files:
-            try:
-                # 读取 TSV 文件
-                df = pd.read_csv(exist_file, sep="\t", low_memory=False)
-                # 检查是否包含所需的列
-                if all(col in df.columns for col in features):
-                    # 提取所需的列
-                    df_subset = df[features]
-                    year = exist_file.split('\\')[4]
-                    # 指定输出文件路径
-                    output_file_path = f"E:\\NHANES_pythonpages\\getNhanes\\{year}_{metricName}.csv"
-                    # 保存到 CSV 文件
-                    df_subset.to_csv(output_file_path, index=False, encoding='utf-8')
-                    print(f"{year} 数据保存成功，文件路径：{output_file_path}")
-                else:
-                    print(f"{year} 数据中缺少所需的列：{features}")
-            except Exception as e:
-                print(f"{year} 数据读取失败：{e}")
+
+    for exist_file in exist_files:
+        try:
+            # 读取 TSV 文件
+            df = pd.read_csv(exist_file, sep="\t", low_memory=False)
+            # 检查是否包含所需的列
+            if all(col in df.columns for col in features):
+                # 提取所需的列
+                df_subset = df[features]
+                year = exist_file.split('\\')[4]
+                # 指定输出文件路径
+                output_file_path = f"E:\\NHANES_pythonpages\\getNhanes\\{year}_{metricName}.csv"
+                # 保存到 CSV 文件
+                df_subset.to_csv(output_file_path, index=False, encoding='utf-8')
+                print(f"{year} 数据保存成功，文件路径：{output_file_path}")
+            else:
+                print(f"{year} 数据中缺少所需的列：{features}")
+        except Exception as e:
+            print(f"{year} 数据读取失败：{e}")
 
 
 if __name__ == '__main__':
-    years = ['2007-2008', '2009-2010', '2011-2012', '2013-2014']
-    features = ['seqn', "diq010"]
-    x = "E:\\NHANES_DATA\\2024-08-18完整版\\01_NHANES\\"
-    metricName = "diq010"
-    get_DEET(years,features,x,metricName)
+    years = ['2007-2008', '2009-2010', '2011-2012', '2013-2014', '2015-2016', '2017-2018']
+    features = ['seqn', "bpq020"]
+    path = "E:\\NHANES_DATA\\2024-08-18完整版\\01_NHANES\\"
+    metricName = "bpq"
+    get_DEET(years,features,path,metricName)
