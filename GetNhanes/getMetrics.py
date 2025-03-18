@@ -16,12 +16,14 @@ def get_nhanes_data(years, features, basepath, metric_prefix,
     """
     # 参数校验
     if features is not None:
+        if not features:  # 新增空列表检查
+            raise ValueError("Features list cannot be empty.")
         if 'seqn' not in features:
-            raise ValueError("特征列表必须包含'seqn'列")
+            raise ValueError("Features must include 'seqn'.")
     if not os.path.exists(basepath):
-        raise FileNotFoundError(f"基础路径不存在: {basepath}")
+        raise FileNotFoundError(f"Base path not found: {basepath}")
     if not years:
-        raise ValueError("至少需要指定一个年份")
+        raise ValueError("Years list cannot be empty.")
 
     # 设置输出目录
     output_dir = output_dir or os.path.join(os.getcwd(), "nhanes_output")
@@ -104,6 +106,7 @@ def get_nhanes_data(years, features, basepath, metric_prefix,
         merged_df.to_csv(merged_path, index=False)
         print(f"✨ 合并完成！总数据量: {len(merged_df)} 行")
         print(f"📦 合并文件路径: {merged_path}")
+    return True
 
 
 if __name__ == '__main__':
